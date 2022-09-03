@@ -1,21 +1,7 @@
-import React, { useState, useReducer, useContext } from "react";
-const initialState = {
-	isLoading: false,
-	showAlert: false,
-	alertText: "",
-	alertType: "",
+
+
+const reducer = () => {
+	throw new Error(`no such action : ${action.type}`);
 };
 
-const AppContext = React.createContext();
-
-const AppProvider = ({ children }) => {
-	const [state, setState] = useState(initialState);
-	return (
-		<AppContext.Provider value={{ ...state }}>{children} </AppContext.Provider>
-	);
-};
-const useAppContext = () => {
-	return useContext(AppContext);
-};
-
-export { AppProvider, initialState, useAppContext };
+export default reducer;
