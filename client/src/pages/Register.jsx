@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/style/RegisterPage";
+import { useAppContext } from "../context/reducer";
 
 const initialState = {
 	name: "",
@@ -12,7 +13,8 @@ const initialState = {
 
 const Register = () => {
 	const [values, setValues] = useState(initialState);
-
+	const state = useAppContext();
+	console.log(state);
 	const toggleMember = () => {
 		setValues({ ...values, isMember: !values.isMember });
 	};
