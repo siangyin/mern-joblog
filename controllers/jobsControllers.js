@@ -7,7 +7,7 @@ const deleteJob = async (req, res) => {
 };
 
 const getAllJobs = async (req, res) => {
-	res.send("getAllJobs");
+	res.json({ data: "getAllJobs" });
 };
 
 const updateJob = async (req, res) => {

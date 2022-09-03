@@ -35,7 +35,7 @@ const Register = () => {
 
 	const getDb = async () => {
 		try {
-			const res = await fetch("http://localhost:8080/api/v1/jobs");
+			const res = await fetch("/api/v1/jobs");
 			const data = await res.json();
 			console.log(data);
 		} catch (error) {
