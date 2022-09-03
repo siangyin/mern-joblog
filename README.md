@@ -487,21 +487,18 @@ npm install mongoose
 - setup as MONGO_URL in .env
 - provide credentials and DB Name
 
-#### Auth Controller and Route Structure
+#### Create Controller and Route Structure
 
-- create <b>controllers</b>
-- authController.js
-- create async functions
+- create <b>controllers</b>>authController.js
 
 ```js
-export { register, login, updateUser };
+const register = (req, res) => {
+	res.send("register");
+};
 ```
 
-- return res.send('function name')
-- create <b>routes</b> folder
-- authRoutes.js
+- create <b>routes</b>>authRoutes.js
 - setup express router
-- import functions from authController.js
 
 ```js
 router.route("/register").post(register);
