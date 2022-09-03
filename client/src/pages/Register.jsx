@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/style/RegisterPage";
 import { useAppContext } from "../context/appContext";
@@ -33,6 +33,18 @@ const Register = () => {
 		console.log(values);
 	};
 
+	const getDb = async () => {
+		try {
+			const res = await fetch("http://localhost:8080/api/v1/jobs");
+			const data = await res.json();
+			console.log(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	useEffect(() => {
+		getDb();
+	}, []);
 	return (
 		<Wrapper className="full-page">
 			<form className="form" onSubmit={onSubmit}>
