@@ -13,35 +13,35 @@ html {
 
 :root {
 	/* colors */
-	--primary-50: #e0fcff;
-	--primary-100: #bef8fd;
-	--primary-200: #87eaf2;
-	--primary-300: #54d1db;
-	--primary-400: #38bec9;
-	--primary-500: #2cb1bc;
-	--primary-600: #14919b;
-	--primary-700: #0e7c86;
-	--primary-800: #0a6c74;
-	--primary-900: #044e54;
+	--primary-50: #f1fbff;
+	--primary-100: #d4f3ff;
+	--primary-200: #b8ebff;
+	--primary-300: #9be2ff;
+	--primary-400: #7edaff;
+	--primary-500: #65c1e6;
+	--primary-600: #4e96b3;
+	--primary-700: #386b80;
+	--primary-800: #22404d;
+	--primary-900: #162b33;
 
 	/* grey */
-	--grey-50: #f0f4f8;
-	--grey-100: #d9e2ec;
-	--grey-200: #bbc7dc;
-	--grey-300: #91abca;
-	--grey-400: #688cb6;
-	--grey-500: #5078a5;
-	--grey-600: #42648a;
-	--grey-700: #2e4660;
-	--grey-800: #213245;
-	--grey-900: #141e29;
+	--grey-50: #f4f5f7;
+	--grey-100: #d1d6df;
+	--grey-200: #bbc2ce;
+	--grey-300: #a4adbe;
+	--grey-400: #8d99ae;
+	--grey-500: #717a8b;
+	--grey-600: #555c68;
+	--grey-700: #383d46;
+	--grey-800: #1c1f23;
+	--grey-900: #02022f;
 	/* rest of the colors */
-	--black: #000000;
+	--black: #010113;
 	--white: #fff;
 	--red-light: #ffc8dd;
 	--red-dark: #ff70a5;
-	--green-light: #caf9e6;
-	--green-dark: #017647;
+	--green-light: #9af6e7;
+	--green-dark: #21897e;
 
 	/* fonts  */
 	--headingFont: "Open Sans", Sans-serif;
