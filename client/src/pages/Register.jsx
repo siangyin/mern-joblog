@@ -8,13 +8,12 @@ const initialState = {
 	email: "",
 	password: "",
 	isMember: true,
-	showAlert: false,
 };
 
 const Register = () => {
 	const [values, setValues] = useState(initialState);
-	const state = useAppContext();
-	console.log(state);
+	const { isLoading, showAlert } = useAppContext();
+	// console.log(state);
 	const toggleMember = () => {
 		setValues({ ...values, isMember: !values.isMember });
 	};
@@ -35,7 +34,7 @@ const Register = () => {
 				<Logo />
 				<h3>{values.isMember ? "Login" : "Register"}</h3>
 
-				{values.showAlert && <Alert alertType="warning" alertText="test" />}
+				{showAlert && <Alert />}
 				{/* name input */}
 				{!values.isMember && (
 					<FormRow
@@ -61,7 +60,7 @@ const Register = () => {
 					handleChange={handleChange}
 				/>
 
-				<button type="submit" className="btn btn-block">
+				<button type="submit" className="btn btn-block" disabled={isLoading}>
 					submit
 				</button>
 
