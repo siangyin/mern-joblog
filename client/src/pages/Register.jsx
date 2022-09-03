@@ -33,18 +33,19 @@ const Register = () => {
 		console.log(values);
 	};
 
-	const getDb = async () => {
-		try {
-			const res = await fetch("/api/v1/jobs");
-			const data = await res.json();
-			console.log(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	useEffect(() => {
-		getDb();
-	}, []);
+	// const getDb = async () => {
+	// 	try {
+	// 		const res = await fetch("/api/v1/jobs");
+	// 		const data = await res.json();
+	// 		console.log(data);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
+	// useEffect(() => {
+	// 	getDb();
+	// }, []);
+
 	return (
 		<Wrapper className="full-page">
 			<form className="form" onSubmit={onSubmit}>
