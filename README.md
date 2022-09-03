@@ -513,3 +513,13 @@ export default router;
 ```js
 app.use("/api/v1/auth", authRouter);
 ```
+
+#### Postman
+
+- set URL global var
+- create new Collection and relevant folders, then setup routes
+
+#### Setup Model
+
+- <b>models</b> folder and files
+- in each model file, to setup schema
