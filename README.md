@@ -523,3 +523,21 @@ app.use("/api/v1/auth", authRouter);
 
 - <b>models</b> folder and files
 - in each model file, to setup schema
+
+#### Validate Email
+
+```js
+validate:{
+  validator:(field)=> {return 2 > 1},
+  message:'Please provide valid email'
+  }
+```
+
+- [Validator Package](https://www.npmjs.com/package/validator)
+
+```sh
+npm install validator
+```
+
+- import in User.js
+- validator.isEmail
