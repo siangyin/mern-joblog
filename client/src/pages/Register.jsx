@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/style/RegisterPage";
 import { useAppContext } from "../context/appContext";
@@ -11,17 +13,17 @@ const initialState = {
 };
 
 const Register = () => {
+	const navigate = useNavigate();
+	const { user, isLoading, showAlert, displayAlert, registerUser } =
+		useAppContext();
+
 	const [values, setValues] = useState(initialState);
-	const { isLoading, showAlert, displayAlert, registerUser } = useAppContext();
-	// console.log(state);
 	const toggleMember = () => {
 		setValues({ ...values, isMember: !values.isMember });
 	};
 
 	const handleChange = (e) => {
-		// console.log(e.target.name, e.target.value);
 		setValues({ ...values, [e.target.name]: e.target.value });
-		// console.log(values);
 	};
 
 	const onSubmit = (e) => {
@@ -37,21 +39,25 @@ const Register = () => {
 		} else {
 			registerUser(currUser);
 		}
-		// console.log(values);
 	};
 
 	// const getDb = async () => {
 	// 	try {
 	// 		const res = await fetch("/api/v1/jobs");
 	// 		const data = await res.json();
-	// 		console.log(data);
 	// 	} catch (error) {
 	// 		console.log(error);
 	// 	}
 	// };
-	// useEffect(() => {
-	// 	getDb();
-	// }, []);
+
+	useEffect(() => {
+		if (user) {
+			// navigate("/");
+			setTimeout(() => {
+				navigate("/");
+			}, 1000);
+		}
+	}, [user, navigate]);
 
 	return (
 		<Wrapper className="full-page">

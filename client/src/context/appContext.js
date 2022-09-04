@@ -12,15 +12,19 @@ const endPoint = {
 	jobsId: "/api/v1/jobs/{id}",
 };
 
+const token = localStorage.getItem("token");
+const user = localStorage.getItem("user");
+const userLocation = localStorage.getItem("location");
+
 const initialState = {
 	isLoading: false,
 	showAlert: false,
 	alertText: "",
 	alertType: "",
-	user: null,
-	token: null,
-	userLocation: "",
-	jobLocation: "",
+	user: user ? JSON.parse(user) : null,
+	token: token,
+	userLocation: userLocation || "",
+	jobLocation: userLocation || "",
 };
 
 const AppContext = React.createContext();
@@ -39,16 +43,29 @@ const AppProvider = ({ children }) => {
 		}, 3000);
 	};
 
+	const addUserToLocalStorage = ({ user, token }) => {
+		localStorage.setItem("user", JSON.stringify(user));
+		localStorage.setItem("token", token);
+		localStorage.setItem("location", user.location);
+	};
+
+	// const removeUserFromLocalStorage = () => {
+	// 	localStorage.removeItem("token");
+	// 	localStorage.removeItem("user");
+	// 	localStorage.removeItem("location");
+	// };
+
 	const registerUser = async (currUser) => {
 		dispatch({ type: ActionsType.SETUP_USER_BEGIN });
 
 		try {
 			const response = await axios.post(endPoint.userRegister, currUser);
-			console.log(response);
+			const { user, token } = response.data;
 			dispatch({
 				type: ActionsType.SETUP_USER_SUCCESS,
-				payload: { user: response.data.user, token: response.data.token },
+				payload: { user, token },
 			});
+			addUserToLocalStorage({ user, token });
 		} catch (error) {
 			dispatch({
 				type: ActionsType.SETUP_USER_ERROR,
