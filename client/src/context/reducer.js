@@ -33,7 +33,7 @@ const reducer = (state, action) => {
 			jobLocation: action.payload.user.location,
 			showAlert: true,
 			alertType: "success",
-			alertText: "User created! redirecting...",
+			alertText: action.payload.alertText,
 		};
 	}
 

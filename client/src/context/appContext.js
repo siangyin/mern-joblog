@@ -4,8 +4,7 @@ import reducer from "./reducer";
 import { ActionsType } from "./actions";
 
 const endPoint = {
-	userRegister: "/api/v1/auth/register",
-	userLogin: "/api/v1/auth/login",
+	setupUser: "/api/v1/auth",
 	userUpdate: "/api/v1/auth/updateuser",
 	jobs: "/api/v1/jobs",
 	jobsStats: "/api/v1/jobs/stats",
@@ -55,15 +54,18 @@ const AppProvider = ({ children }) => {
 	// 	localStorage.removeItem("location");
 	// };
 
-	const registerUser = async (currUser) => {
+	const setupUser = async ({ currUser, endPointReq, alertText }) => {
 		dispatch({ type: ActionsType.SETUP_USER_BEGIN });
 
 		try {
-			const response = await axios.post(endPoint.userRegister, currUser);
+			const response = await axios.post(
+				`${endPoint.setupUser}/${endPointReq}`,
+				currUser
+			);
 			const { user, token } = response.data;
 			dispatch({
 				type: ActionsType.SETUP_USER_SUCCESS,
-				payload: { user, token },
+				payload: { user, token, alertText },
 			});
 			addUserToLocalStorage({ user, token });
 		} catch (error) {
@@ -80,7 +82,7 @@ const AppProvider = ({ children }) => {
 			value={{
 				...state,
 				displayAlert,
-				registerUser,
+				setupUser,
 			}}
 		>
 			{children}{" "}
