@@ -164,6 +164,38 @@ const AppProvider = ({ children }) => {
 		dispatch({ type: ActionsType.TOGGLE_SIDEBAR });
 	};
 
+	// form helper
+	const handleChange = ({ name, value }) => {
+		dispatch({ type: ActionsType.HANDLE_CHANGE, payload: { name, value } });
+	};
+	const clearValues = () => {
+		dispatch({ type: ActionsType.CLEAR_VALUES });
+	};
+
+	// CREATE JOB
+	const createJob = async () => {
+		dispatch({ type: ActionsType.CREATE_JOB_BEGIN });
+		try {
+			const { position, company, jobLocation, jobType, status } = state;
+			await authFetch.post("/jobs", {
+				position,
+				company,
+				jobLocation,
+				jobType,
+				status,
+			});
+			dispatch({ type: ActionsType.CREATE_JOB_SUCCESS });
+			dispatch({ type: ActionsType.CLEAR_VALUES });
+		} catch (error) {
+			if (error.response.status === 401) return;
+			dispatch({
+				type: ActionsType.CREATE_JOB_ERROR,
+				payload: { msg: error.response.data.msg },
+			});
+		}
+		clearAlert();
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -173,6 +205,9 @@ const AppProvider = ({ children }) => {
 				logoutUser,
 				toggleSidebar,
 				updateUser,
+				handleChange,
+				clearValues,
+				createJob,
 			}}
 		>
 			{children}{" "}

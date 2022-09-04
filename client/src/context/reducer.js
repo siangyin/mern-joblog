@@ -95,6 +95,58 @@ const reducer = (state, action) => {
 		};
 	}
 
+	// HANDLE FORM VALUE UPDATE STATE
+	if (action.type === ActionsType.HANDLE_CHANGE) {
+		return {
+			...state,
+			// page: 1,
+			[action.payload.name]: action.payload.value,
+		};
+	}
+
+	// CLEAR JOBFORM
+	if (action.type === ActionsType.CLEAR_VALUES) {
+		const initialState = {
+			isEditing: false,
+			editJobId: "",
+			position: "",
+			company: "",
+			jobLocation: state.userLocation,
+			jobType: "full-time",
+			status: "pending",
+		};
+
+		return {
+			...state,
+			...initialState,
+		};
+	}
+
+	// CREATE NEW JOB
+	if (action.type === ActionsType.CREATE_JOB_BEGIN) {
+		return { ...state, isLoading: true };
+	}
+
+	if (action.type === ActionsType.CREATE_JOB_SUCCESS) {
+		return {
+			...state,
+			isLoading: false,
+			showAlert: true,
+			alertType: "success",
+			alertText: "New Job Created!",
+		};
+	}
+
+	if (action.type === ActionsType.CREATE_JOB_ERROR) {
+		return {
+			...state,
+			isLoading: false,
+			showAlert: true,
+			alertType: "danger",
+			alertText: action.payload.msg,
+		};
+	}
+
 	throw new Error(`no such action : ${action.type}`);
 };
 
