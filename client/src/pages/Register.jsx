@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Logo, FormRow, Alert } from "../components";
-import Wrapper from "../assets/style/RegisterPage";
 import { useAppContext } from "../context/appContext";
+import Wrapper from "../assets/style/RegisterPage";
+import { Logo, FormRow, Alert } from "../components";
 
 const initialState = {
 	name: "",

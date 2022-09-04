@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FaAlignLeft, FaUserCircle, FaCaretDown } from "react-icons/fa";
 
 import { useAppContext } from "../context/appContext";
-
 import Wrapper from "../assets/style/Navbar";
 import Logo from "./Logo";
 

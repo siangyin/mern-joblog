@@ -3,12 +3,12 @@ import axios from "axios";
 import reducer from "./reducer";
 import { ActionsType } from "./actions";
 
-const endPoint = {
+const apiPath = {
 	setupUser: "/api/v1/auth",
-	userUpdate: "/api/v1/auth/updateuser",
-	jobs: "/api/v1/jobs",
-	jobsStats: "/api/v1/jobs/stats",
-	jobsId: "/api/v1/jobs/{id}",
+	userUpdate: "/auth/updateuser",
+	jobs: "/jobs",
+	jobsStats: "/jobs/stats",
+	jobsId: "/jobs/{id}",
 };
 
 const token = localStorage.getItem("token");
@@ -51,6 +51,37 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
+	// CUSTOM AXIOS SETUP
+	const authFetch = axios.create({
+		baseURL: "/api/v1",
+	});
+
+	// request
+	authFetch.interceptors.request.use(
+		(config) => {
+			config.headers.common["Authorization"] = `Bearer ${state.token}`;
+			return config;
+		},
+		(error) => {
+			return Promise.reject(error);
+		}
+	);
+
+	// response
+	authFetch.interceptors.response.use(
+		(response) => {
+			return response;
+		},
+		(error) => {
+			console.log(error.response);
+			if (error.response.status === 401) {
+				// console.log("auth error 401");
+				logoutUser();
+			}
+			return Promise.reject(error);
+		}
+	);
+
 	// DISPLAY OR CLEAR ALERT
 	const displayAlert = () => {
 		dispatch({ type: ActionsType.DISPLAY_ALERT });
@@ -82,7 +113,7 @@ const AppProvider = ({ children }) => {
 
 		try {
 			const response = await axios.post(
-				`${endPoint.setupUser}/${endPointReq}`,
+				`${apiPath.setupUser}/${endPointReq}`,
 				currUser
 			);
 			const { user, token } = response.data;
@@ -96,6 +127,29 @@ const AppProvider = ({ children }) => {
 				type: ActionsType.SETUP_USER_ERROR,
 				payload: { msg: error.response.data.msg },
 			});
+		}
+		clearAlert();
+	};
+
+	// UPDATE USER PROFILE
+	const updateUser = async (currUser) => {
+		dispatch({ type: ActionsType.UPDATE_USER_BEGIN });
+		try {
+			const { data } = await authFetch.patch(apiPath.userUpdate, currUser);
+			const { user, location, token } = data;
+
+			dispatch({
+				type: ActionsType.UPDATE_USER_SUCCESS,
+				payload: { user, location, token },
+			});
+			addUserToLocalStorage({ user, token });
+		} catch (error) {
+			if (error.response.status !== 401) {
+				dispatch({
+					type: ActionsType.UPDATE_USER_ERROR,
+					payload: { msg: error.response.data.msg },
+				});
+			}
 		}
 		clearAlert();
 	};
@@ -118,6 +172,7 @@ const AppProvider = ({ children }) => {
 				setupUser,
 				logoutUser,
 				toggleSidebar,
+				updateUser,
 			}}
 		>
 			{children}{" "}
