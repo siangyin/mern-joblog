@@ -1,6 +1,8 @@
 import { ActionsType } from "./actions";
+import { initialState } from "./appContext";
 
 const reducer = (state, action) => {
+	// DISPLAY OR CLEAR ALERT
 	if (action.type === ActionsType.DISPLAY_ALERT) {
 		return {
 			...state,
@@ -19,6 +21,7 @@ const reducer = (state, action) => {
 		};
 	}
 
+	// LOGIN OR REGISTER USER OR LOGOUT
 	if (action.type === ActionsType.SETUP_USER_BEGIN) {
 		return { ...state, isLoading: true };
 	}
@@ -44,6 +47,24 @@ const reducer = (state, action) => {
 			showAlert: true,
 			alertType: "danger",
 			alertText: action.payload.msg,
+		};
+	}
+
+	if (action.type === ActionsType.LOGOUT_USER) {
+		return {
+			...initialState,
+			user: null,
+			token: null,
+			jobLocation: "",
+			userLocation: "",
+		};
+	}
+
+	// TOGGLESIDEBBAR
+	if (action.type === ActionsType.TOGGLE_SIDEBAR) {
+		return {
+			...state,
+			showSidebar: !state.showSidebar,
 		};
 	}
 
