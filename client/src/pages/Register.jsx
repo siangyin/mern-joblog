@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Logo, FormRow, Alert } from "../components";
 import Wrapper from "../assets/style/RegisterPage";
 import { useAppContext } from "../context/appContext";
@@ -12,15 +12,16 @@ const initialState = {
 
 const Register = () => {
 	const [values, setValues] = useState(initialState);
-	const { isLoading, showAlert, displayAlert } = useAppContext();
+	const { isLoading, showAlert, displayAlert, registerUser } = useAppContext();
 	// console.log(state);
 	const toggleMember = () => {
 		setValues({ ...values, isMember: !values.isMember });
 	};
 
 	const handleChange = (e) => {
-		console.log(e.target.name, e.target.value);
+		// console.log(e.target.name, e.target.value);
 		setValues({ ...values, [e.target.name]: e.target.value });
+		// console.log(values);
 	};
 
 	const onSubmit = (e) => {
@@ -30,7 +31,13 @@ const Register = () => {
 			displayAlert();
 			return;
 		}
-		console.log(values);
+		const currUser = { name, email, password };
+		if (isMember) {
+			console.log("already member");
+		} else {
+			registerUser(currUser);
+		}
+		// console.log(values);
 	};
 
 	// const getDb = async () => {
