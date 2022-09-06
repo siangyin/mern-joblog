@@ -99,7 +99,7 @@ const reducer = (state, action) => {
 	if (action.type === ActionsType.HANDLE_CHANGE) {
 		return {
 			...state,
-			// page: 1,
+			page: 1,
 			[action.payload.name]: action.payload.value,
 		};
 	}

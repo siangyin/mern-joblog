@@ -2,8 +2,7 @@ import { useEffect } from "react";
 
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/style/JobsContainer";
-import Loading from "./Loading";
-import Job from "./Job";
+import { Loading, Job, PageBtnContainer } from ".";
 
 const JobsContainer = () => {
 	const {
@@ -46,6 +45,7 @@ const JobsContainer = () => {
 					return <Job key={job._id} {...job} />;
 				})}
 			</div>
+			{numOfPages > 1 && <PageBtnContainer />}
 		</Wrapper>
 	);
 };

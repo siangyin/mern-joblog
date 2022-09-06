@@ -2,8 +2,7 @@ import { FaTimes } from "react-icons/fa";
 
 import { useAppContext } from "../context/appContext";
 import Wrapper from "../assets/style/SmallSidebar";
-import Logo from "./Logo";
-import NavLinks from "./NavLinks";
+import { Logo, NavLinks } from ".";
 
 const SmallSidebar = () => {
 	const { showSidebar, toggleSidebar } = useAppContext();
