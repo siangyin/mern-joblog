@@ -1,4 +1,33 @@
-# MERN Practice- Job Tracker App
+# MERN Practice- Job Tracker App 
+
+### 🌐 [live demo](https://mern-joblog.herokuapp.com/)
+
+## UI 
+
+https://user-images.githubusercontent.com/86065810/188656911-cfeaf3ea-9bd0-4fcf-9b59-7920b12f2cf9.mp4
+
+<table>
+<tr>
+  <td>Landing page</td>
+  <td><img width="500" alt="img" src="https://github.com/siangyin/mern-joblog/blob/main/ui-screenshot/joblog-landing.png?raw=true"></td>
+</tr>
+<tr>
+  <td>Register/ Login page</td>
+  <td><img width="500" alt="img" src="https://github.com/siangyin/mern-joblog/blob/main/ui-screenshot/joblog-register.png?raw=true"></td>
+</tr>
+<tr>
+  <td>Profile update</td>
+  <td><img width="500" alt="img" src="https://github.com/siangyin/mern-joblog/blob/main/ui-screenshot/joblog-profile.png?raw=true"></td>
+</tr>
+<tr>
+  <td>Summary Stat</td>
+  <td><img width="500" alt="img" src="https://github.com/siangyin/mern-joblog/blob/main/ui-screenshot/joblog-stat.png?raw=true"></td>
+</tr>
+<tr>
+  <td>All Jobs</td>
+  <td><img width="500" alt="img" src="https://github.com/siangyin/mern-joblog/blob/main/ui-screenshot/joblog-alljobs.png?raw=true"></td>
+</tr>
+</table>
 
 #### Run The App Locally
 
