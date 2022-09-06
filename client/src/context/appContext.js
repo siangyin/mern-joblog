@@ -177,7 +177,7 @@ const AppProvider = ({ children }) => {
 		dispatch({ type: ActionsType.CREATE_JOB_BEGIN });
 		try {
 			const { position, company, jobLocation, jobType, status } = state;
-			await authFetch.post("/jobs", {
+			await authFetch.post(apiPath.jobs, {
 				position,
 				company,
 				jobLocation,
@@ -196,6 +196,71 @@ const AppProvider = ({ children }) => {
 		clearAlert();
 	};
 
+	// GET JOBS
+	const getJobs = async () => {
+		const { page, search, searchStatus, searchType, sort } = state;
+
+		let url = `${apiPath.jobs}?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+		if (search) {
+			url = url + `&search=${search}`;
+		}
+		dispatch({ type: ActionsType.GET_JOBS_BEGIN });
+		try {
+			const { data } = await authFetch(url);
+			const { jobs, totalJobs, numOfPages } = data;
+			dispatch({
+				type: ActionsType.GET_JOBS_SUCCESS,
+				payload: {
+					jobs,
+					totalJobs,
+					numOfPages,
+				},
+			});
+		} catch (error) {
+			logoutUser();
+		}
+		// clearAlert();
+	};
+
+	const setEditJob = (id) => {
+		dispatch({ type: ActionsType.SET_EDIT_JOB, payload: { id } });
+	};
+
+	const editJob = async () => {
+		dispatch({ type: ActionsType.EDIT_JOB_BEGIN });
+
+		try {
+			const { position, company, jobLocation, jobType, status } = state;
+			await authFetch.patch(`${apiPath.jobs}/${state.editJobId}`, {
+				company,
+				position,
+				jobLocation,
+				jobType,
+				status,
+			});
+			dispatch({ type: ActionsType.EDIT_JOB_SUCCESS });
+			dispatch({ type: ActionsType.CLEAR_VALUES });
+		} catch (error) {
+			if (error.response.status === 401) return;
+			dispatch({
+				type: ActionsType.EDIT_JOB_ERROR,
+				payload: { msg: error.response.data.msg },
+			});
+		}
+		clearAlert();
+	};
+
+	// DELETE JOB
+	const deleteJob = async (jobId) => {
+		dispatch({ type: ActionsType.DELETE_JOB_BEGIN });
+		try {
+			await authFetch.delete(`${apiPath.jobs}/${jobId}`);
+			getJobs();
+		} catch (error) {
+			logoutUser();
+		}
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -208,6 +273,10 @@ const AppProvider = ({ children }) => {
 				handleChange,
 				clearValues,
 				createJob,
+				getJobs,
+				setEditJob,
+				editJob,
+				deleteJob,
 			}}
 		>
 			{children}{" "}

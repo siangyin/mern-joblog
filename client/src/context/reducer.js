@@ -147,6 +147,67 @@ const reducer = (state, action) => {
 		};
 	}
 
+	// GET JOBS
+	if (action.type === ActionsType.GET_JOBS_BEGIN) {
+		return { ...state, isLoading: true, showAlert: false };
+	}
+
+	if (action.type === ActionsType.GET_JOBS_SUCCESS) {
+		return {
+			...state,
+			isLoading: false,
+			jobs: action.payload.jobs,
+			totalJobs: action.payload.totalJobs,
+			numOfPages: action.payload.numOfPages,
+		};
+	}
+
+	// EDIT JOB
+	if (action.type === ActionsType.SET_EDIT_JOB) {
+		const job = state.jobs.find((job) => job._id === action.payload.id);
+		const { _id, position, company, jobLocation, jobType, status } = job;
+		return {
+			...state,
+			isEditing: true,
+			editJobId: _id,
+			position,
+			company,
+			jobLocation,
+			jobType,
+			status,
+		};
+	}
+
+	if (action.type === ActionsType.EDIT_JOB_BEGIN) {
+		return {
+			...state,
+			isLoading: true,
+		};
+	}
+	if (action.type === ActionsType.EDIT_JOB_SUCCESS) {
+		return {
+			...state,
+			isLoading: false,
+			showAlert: true,
+			alertType: "success",
+			alertText: "Job Updated!",
+		};
+	}
+	if (action.type === ActionsType.EDIT_JOB_ERROR) {
+		return {
+			...state,
+			isLoading: false,
+			showAlert: true,
+			alertType: "danger",
+			alertText: action.payload.msg || "something went wrong",
+		};
+	}
+
+	// DELETE JOB
+	if (action.type === ActionsType.DELETE_JOB_BEGIN) {
+		return { ...state, isLoading: true };
+	}
+
 	throw new Error(`no such action : ${action.type}`);
 };
 

@@ -12,7 +12,7 @@ const Logo = () => {
 						lineHeight: "1.3rem",
 					}}
 				>
-					Jobbook
+					JOBlog
 				</strong>
 			</div>
 		</header>
