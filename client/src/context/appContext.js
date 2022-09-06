@@ -163,7 +163,7 @@ const AppProvider = ({ children }) => {
 		dispatch({ type: ActionsType.TOGGLE_SIDEBAR });
 	};
 
-	// form helper
+	// form helper: HANDLE CHANGE
 	const handleChange = ({ name, value }) => {
 		dispatch({ type: ActionsType.HANDLE_CHANGE, payload: { name, value } });
 	};
@@ -277,6 +277,16 @@ const AppProvider = ({ children }) => {
 		}
 	};
 
+	// CLEAR FILTER
+	const clearFilters = () => {
+		dispatch({ type: ActionsType.CLEAR_FILTERS });
+	};
+
+	// CHANGE PAGE
+	const changePage = (page) => {
+		dispatch({ type: ActionsType.CHANGE_PAGE, payload: { page } });
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -294,6 +304,8 @@ const AppProvider = ({ children }) => {
 				editJob,
 				deleteJob,
 				showStats,
+				clearFilters,
+				changePage,
 			}}
 		>
 			{children}

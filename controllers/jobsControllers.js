@@ -33,7 +33,39 @@ const deleteJob = async (req, res) => {
 
 // GET ALL JOBS
 const getAllJobs = async (req, res) => {
-	const jobs = await Job.find({ createdBy: req.user.userId });
+	const { status, jobType, sort, search } = req.query;
+	// console.log(req.query); //{ status: 'ok', jobType: 'all', sort: 'asc', search: 'sea ' }
+
+	const queryObject = {
+		createdBy: req.user.userId,
+	};
+	if (status && status !== "all") {
+		queryObject.status = status;
+	}
+	if (jobType && jobType !== "all") {
+		queryObject.jobType = jobType;
+	}
+	if (search) {
+		queryObject.position = { $regex: search, $options: "i" };
+	}
+
+	// NO AWAIT
+	let result = Job.find(queryObject);
+
+	if (sort === "latest") {
+		result = result.sort("-createdAt");
+	}
+	if (sort === "oldest") {
+		result = result.sort("createdAt");
+	}
+	if (sort === "a-z") {
+		result = result.sort("position");
+	}
+	if (sort === "z-a") {
+		result = result.sort("-position");
+	}
+
+	const jobs = await result;
 
 	res
 		.status(StatusCodes.OK)

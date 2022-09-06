@@ -226,6 +226,22 @@ const reducer = (state, action) => {
 		};
 	}
 
+	// CLEAR FILTER
+	if (action.type === ActionsType.CLEAR_FILTERS) {
+		return {
+			...state,
+			search: "",
+			searchStatus: "all",
+			searchType: "all",
+			sort: "latest",
+		};
+	}
+
+	// CHANGE PAGE
+	if (action.type === ActionsType.CHANGE_PAGE) {
+		return { ...state, page: action.payload.page };
+	}
+
 	throw new Error(`no such action : ${action.type}`);
 };
 
