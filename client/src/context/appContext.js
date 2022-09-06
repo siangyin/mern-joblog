@@ -8,7 +8,6 @@ const apiPath = {
 	userUpdate: "/auth/updateuser",
 	jobs: "/jobs",
 	jobsStats: "/jobs/stats",
-	jobsId: "/jobs/{id}",
 };
 
 const token = localStorage.getItem("token");
@@ -261,6 +260,23 @@ const AppProvider = ({ children }) => {
 		}
 	};
 
+	// SHOW STATS
+	const showStats = async () => {
+		dispatch({ type: ActionsType.SHOW_STATS_BEGIN });
+		try {
+			const { data } = await authFetch(apiPath.jobsStats);
+			dispatch({
+				type: ActionsType.SHOW_STATS_SUCCESS,
+				payload: {
+					stats: data.userStats,
+					monthlyApplications: data.monthlyApplications,
+				},
+			});
+		} catch (error) {
+			logoutUser();
+		}
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -277,9 +293,10 @@ const AppProvider = ({ children }) => {
 				setEditJob,
 				editJob,
 				deleteJob,
+				showStats,
 			}}
 		>
-			{children}{" "}
+			{children}
 		</AppContext.Provider>
 	);
 };

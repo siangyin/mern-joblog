@@ -199,13 +199,31 @@ const reducer = (state, action) => {
 			isLoading: false,
 			showAlert: true,
 			alertType: "danger",
-			alertText: action.payload.msg || "something went wrong",
+			alertText: action.payload.msg || "Something went wrong",
 		};
 	}
 
 	// DELETE JOB
 	if (action.type === ActionsType.DELETE_JOB_BEGIN) {
 		return { ...state, isLoading: true };
+	}
+
+	// SHOW STATS
+	if (action.type === ActionsType.SHOW_STATS_BEGIN) {
+		return {
+			...state,
+			isLoading: true,
+			showAlert: false,
+		};
+	}
+
+	if (action.type === ActionsType.SHOW_STATS_SUCCESS) {
+		return {
+			...state,
+			isLoading: false,
+			stats: action.payload.stats,
+			monthlyApplications: action.payload.monthlyApplications,
+		};
 	}
 
 	throw new Error(`no such action : ${action.type}`);

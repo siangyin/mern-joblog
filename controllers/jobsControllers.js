@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
-// import moment from "moment";
+import moment from "moment";
 import Job from "../models/Job.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import checkPermissions from "../helper/checkPermissions.js";
@@ -65,8 +65,76 @@ const updateJob = async (req, res) => {
 	res.status(StatusCodes.OK).json({ updatedJob });
 };
 
+// SHOW STATS
 const showStats = async (req, res) => {
-	res.send("showStats");
+	let stats = await Job.aggregate([
+		{ $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+		{ $group: { _id: "$status", count: { $sum: 1 } } },
+	]);
+
+	// stats =>  stats: [{ _id : "declined", count: 2 },
+	//       { _id : "interview", count : 6 },
+	//       { _id : "pending", count : 3 }]
+
+	stats = stats.reduce((acc, curr) => {
+		const { _id: title, count } = curr;
+		acc[title] = count;
+		return acc;
+	}, {});
+	// updated stats become  newstats: { declined : 2, interview : 6, pending : 3 }
+
+	// if user dont hav any job for status, display zero for each status
+	const userStats = {
+		pending: stats.pending || 0,
+		interview: stats.interview || 0,
+		declined: stats.declined || 0,
+	};
+
+	let monthlyApplications = await Job.aggregate([
+		{ $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+		{
+			$group: {
+				_id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+				count: { $sum: 1 },
+			},
+		},
+		{ $sort: { "_id.year": -1, "_id.month": -1 } },
+		{ $limit: 6 },
+	]);
+
+	// will return by each yr, mth from recent till oldest and limit to 6 mths
+	// [
+	// 	{ _id: { year: 2022, month: 9 }, count: 7 },
+	// 	{ _id: { year: 2022, month: 8 }, count: 1 },
+	// 	{ _id: { year: 2022, month: 6 }, count: 1 },
+	// 	{ _id: { year: 2021, month: 9 }, count: 1 },
+	// 	{ _id: { year: 2020, month: 12 }, count: 1 },
+	// ];
+
+	monthlyApplications = monthlyApplications
+		.map((item) => {
+			const {
+				_id: { year, month },
+				count,
+			} = item;
+			const date = moment()
+				.month(month - 1)
+				.year(year)
+				.format("MMM Y");
+			return { date, count };
+		})
+		.reverse();
+
+	// will return eg array with date at Mmm YYYY
+	// [ { date: "Sep 2022", count: 4, },
+	// 	{ date: "Aug 2022", count: 1, },
+	// 	{ date: "Jun 2022", count: 1, },
+	// 	{ date: "May 2022", count: 1, },
+	// 	{ date: "Feb 2022", count: 1, },
+	// 	{ date: "Sep 2021", count: 1, },
+	// ];
+
+	res.status(StatusCodes.OK).json({ userStats, monthlyApplications });
 };
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };
